@@ -12,31 +12,49 @@ import {
   InputTextMessageContent,
 } from "telegraf/types";
 import { TopicIds, TopicNames } from "../constants/topics";
+import { MIN_INTERVAL } from "../constants/post";
+import { getNextTopic } from "../utils/topic_rotation";
+import {
+  isPosting,
+  lastPostedAt,
+  updateIsPosting,
+} from "../utils/anti_span_guards";
 
 if (!BOTOKEN) throw new Error("BOTOKEN not set in .env");
 
 export const bot = new Telegraf(BOTOKEN!);
 const supergroupId = -1003628334767;
 
-schedule("* 1 * * *", async () => {
-  try {
-    // const topics = Object.keys(TopicNames);
-    const topicNames = Object.keys(TopicIds);
-    const randomTopicTitle = topicNames[
-      Math.round(Math.random() * topicNames.length) - 1
-    ] as TopicNames;
-    console.log(randomTopicTitle);
-    logger.info("Sending message");
-    console.log("TOPIC: ", randomTopicTitle);
-    console.log("Supergroup ID:", supergroupId);
-    console.log("Topic ID:", randomTopicTitle);
+async function postTask() {
+  const now = Date.now();
 
-    const msg = await sendMessage(randomTopicTitle);
+  if (isPosting) {
+    logger.warn("Post skipped: already running");
+    return;
+  }
+
+  if (now - lastPostedAt < MIN_INTERVAL) {
+    logger.warn("Post skipped: too soon");
+    return;
+  }
+
+  updateIsPosting(true);
+
+  try {
+    const nextTopicName = getNextTopic();
+
+    console.log(nextTopicName);
+    logger.info("Sending message");
+    console.log("TOPIC: ", nextTopicName);
+    console.log("Supergroup ID:", supergroupId);
+    console.log("Topic ID:", nextTopicName);
+
+    const msg = await sendMessage(nextTopicName);
     if (!msg) return;
 
     await bot.telegram.sendMessage(supergroupId, msg, {
       parse_mode: "HTML",
-      message_thread_id: TopicIds[randomTopicTitle],
+      message_thread_id: TopicIds[nextTopicName],
       link_preview_options: {
         show_above_text: true,
         prefer_small_media: true,
@@ -51,8 +69,12 @@ schedule("* 1 * * *", async () => {
     } else {
       console.error(error);
     }
+  } finally {
+    updateIsPosting(false);
   }
-});
+}
+
+schedule("*/30 */6 * * *", postTask);
 
 bot.on("inline_query", async (ctx) => {
   try {
