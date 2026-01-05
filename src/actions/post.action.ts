@@ -16,5 +16,6 @@ export async function POST_CONTENT(ctx: Context) {
 
   pendingPosts.delete(userId);
 
-  await ctx.answerCbQuery("Posted successfully!!");
+  await ctx.editMessageText("Posted successfully!!");
+  
 }
