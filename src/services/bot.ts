@@ -23,6 +23,7 @@ if (!BOTOKEN) throw new Error("BOTOKEN not set in .env");
 
 export const bot = new Telegraf(BOTOKEN!);
 const supergroupId = -1003628334767;
+let retryCount = 0;
 
 export async function postTask(content?: string, topic?: TopicNames) {
   const now = Date.now();
@@ -67,13 +68,23 @@ export async function postTask(content?: string, topic?: TopicNames) {
   } catch (error) {
     if (error instanceof TelegramError) {
       logger.error(`Telegram Error: ${error.message}`);
+      // return;
+      retryCount += 1;
+      if (retryCount != 3) {
+        updateIsPosting(false);
+        console.log("Trying again", retryCount);
+        return await postTask();
+      }
       return;
     } else {
-      console.error(error);
+      logger.error(error);
     }
   } finally {
     updateIsPosting(false);
+    if (retryCount > 0) retryCount = 0;
   }
+
+  console.log(retryCount, isPosting);
 }
 
 schedule("*/30 */6 * * *", () => postTask());
