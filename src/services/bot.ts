@@ -1,4 +1,4 @@
-import { Telegraf, TelegramError } from "telegraf";
+import { Markup, Telegraf, TelegramError } from "telegraf";
 import { message } from "telegraf/filters";
 import { schedule } from "node-cron";
 // import { sendMsg } from "./gemini_ai";
@@ -19,13 +19,15 @@ import {
   lastPostedAt,
   updateIsPosting,
 } from "../utils/anti_span_guards";
+import { commands } from "../commands";
+import { actions } from "../actions";
 
 if (!BOTOKEN) throw new Error("BOTOKEN not set in .env");
 
 export const bot = new Telegraf(BOTOKEN!);
 const supergroupId = -1003628334767;
 
-async function postTask() {
+export async function postTask() {
   const now = Date.now();
 
   if (isPosting) {
@@ -76,6 +78,8 @@ async function postTask() {
 
 schedule("*/30 */6 * * *", postTask);
 
+bot.command("createPost", commands.createPost);
+
 bot.on("inline_query", async (ctx) => {
   try {
     const query = ctx.inlineQuery.query.trim().toLowerCase();
@@ -92,6 +96,9 @@ bot.on("inline_query", async (ctx) => {
   }
 });
 
+Object.entries(actions).forEach(([key, handler]) => {
+  bot.action(key, handler);
+});
 // bot.on("inline_query", async (ctx) => {
 //   console.log("MSG RECIVED")
 //   const query = ctx.inlineQuery.query.trim().toLocaleLowerCase();
