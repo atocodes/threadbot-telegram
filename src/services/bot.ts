@@ -78,7 +78,7 @@ export async function postTask(content?: string, topic?: TopicNames) {
 
 schedule("*/30 */6 * * *", () => postTask());
 
-bot.command("createPost", commands.createPost);
+bot.command("createpost", commands.createPost);
 
 Object.entries(actions).forEach(([key, handler]) => {
   bot.action(key, handler);
