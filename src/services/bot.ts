@@ -87,7 +87,7 @@ export async function postTask(content?: string, topic?: TopicNames) {
   console.log(retryCount, isPosting);
 }
 
-schedule("*/30 */6 * * *", () => postTask());
+schedule("*/30 * * * *", () => postTask());
 
 bot.command("createpost", commands.createPost);
 
