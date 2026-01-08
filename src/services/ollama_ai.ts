@@ -32,6 +32,7 @@ export async function generateOllamaContent(
     }
     return responseMsg;
   } catch (error) {
+    
     logger.error(error);
   }
 }
