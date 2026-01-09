@@ -1,12 +1,7 @@
 import { Telegraf, TelegramError } from "telegraf";
 import { schedule } from "node-cron";
 import { logger } from "../../config/logger";
-// import {
-//   // generateGeminiAnswer,
-//   generateOllamaContent,
-// } from "../../adapters/chat_bots/ollama_ai";
 import { BOTOKEN } from "../../config/env";
-import { InlineQueryResultArticle } from "telegraf/types";
 import { TopicIds, TopicNames } from "../../constants/topics";
 import { MIN_INTERVAL } from "../../constants/post";
 import { getNextTopic } from "../../utils/topic_rotation";
@@ -15,13 +10,13 @@ import {
   lastPostedAt,
   updateIsPosting,
 } from "../../utils/anti_span_guards";
-import { commands } from "./commands";
 import { actions } from "./actions";
 import { adapters } from "../../adapters";
+import { BotContext } from "../../types/bot_types";
 
 if (!BOTOKEN) throw new Error("BOTOKEN not set in .env");
 
-export const bot = new Telegraf(BOTOKEN!);
+export const bot = new Telegraf<BotContext>(BOTOKEN!);
 const supergroupId = -1003628334767;
 let retryCount = 0;
 
@@ -87,31 +82,8 @@ export async function postTask(content?: string, topic?: TopicNames) {
   console.log(retryCount, isPosting);
 }
 
-schedule("*/30 * * * *", () => postTask());
-
-bot.command("createpost", commands.createPost);
+schedule("*/15 * * * *", () => postTask());
 
 Object.entries(actions).forEach(([key, handler]) => {
   bot.action(key, handler);
-});
-
-bot.on("inline_query", async (ctx) => {
-  try {
-    const query = ctx.inlineQuery.query.trim().toLowerCase();
-    const results: InlineQueryResultArticle[] = [];
-    setTimeout(() => {}, 2000);
-    if (query != "" || !query) {
-      const res =
-        (await adapters.generateGeminiAnswer(query)) ??
-        await adapters.generateOllamaAnswer(query);
-      results.push(res!);
-    }
-
-    await ctx.answerInlineQuery(results, {
-      cache_time: 3,
-      is_personal: true,
-    });
-  } catch (error) {
-    logger.error(error);
-  }
 });

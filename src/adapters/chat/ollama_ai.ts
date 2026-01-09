@@ -1,4 +1,4 @@
-import { Ollama } from "ollama";
+import { ChatRequest, Message, Ollama } from "ollama";
 import { OLLAMA_API_KEY } from "../../config/env";
 import { logger } from "../../config/logger";
 import { SystemPrompts, TopicNames } from "../../constants/topics";
@@ -12,18 +12,27 @@ const ollama = new Ollama({
 });
 
 export async function generateOllamaContent(
-  topic: TopicNames
+  topic: TopicNames,
+  prompt?: string
 ): Promise<string | undefined> {
   let responseMsg = "";
   try {
+    const message: Message[] = [
+      {
+        role: "system",
+        content: SystemPrompts[topic],
+      },
+    ];
+
+    if (prompt != null) {
+      message.push({
+        role: "user",
+        content: prompt,
+      });
+    }
     const response = await ollama.chat({
       model: "gpt-oss:120b",
-      messages: [
-        {
-          role: "system",
-          content: SystemPrompts[topic],
-        },
-      ],
+      messages: message,
       stream: true,
     });
 
@@ -36,7 +45,9 @@ export async function generateOllamaContent(
   }
 }
 
-export async function generateOllamaAnswer(question: string) : Promise<InlineQueryResultArticle|undefined> {
+export async function generateOllamaAnswer(
+  question: string
+): Promise<InlineQueryResultArticle | undefined> {
   try {
     let responseMsg = "";
     const response = await ollama.chat({
@@ -89,7 +100,7 @@ Generate content ONLY related to that topic.
     for await (const part of response) {
       responseMsg += part.message.content;
     }
-    return JSON.parse(responseMsg)
+    return JSON.parse(responseMsg);
   } catch (error) {
     logger.error(error);
   }

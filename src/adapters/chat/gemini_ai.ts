@@ -9,14 +9,15 @@ import { InlineQueryResultArticle } from "telegraf/types";
 
 const ai = new GoogleGenerativeAI(GEMINI_TOKEN!);
 export async function generateGeminiContent(
-  topic: TopicNames
+  topic: TopicNames,
+  prompt?: string
 ): Promise<string | undefined | null> {
   try {
     const model = ai.getGenerativeModel({
       model: "gemini-2.5-flash",
       systemInstruction: SystemPrompts[topic],
     });
-    const result = await model.generateContent("");
+    const result = await model.generateContent(prompt ?? "");
     const response = await result.response;
     return response.text();
   } catch (error) {
