@@ -9,15 +9,20 @@
 //   GODOT = 15,
 // }
 
-export type TopicNames =
-  | "general"
-  | "resources"
-  | "blogs"
-  | "web3"
-  | "flutter"
-  | "gitngithub"
-  | "mongodb"
-  | "godot";
+export const topicNamesList = [
+  "general",
+  "resources",
+  "blogs",
+  "web3",
+  "flutter",
+  "gitngithub",
+  "mongodb",
+  "godot",
+] as const; // "as const" makes each item a literal type
+
+// Step 2: Derive the type from the array
+export type TopicNames = (typeof topicNamesList)[number];
+
 
 export const TopicIds: Record<TopicNames, number> = {
   general: 1,
@@ -65,7 +70,7 @@ export const TopicIds: Record<TopicNames, number> = {
 
 //   flutter: `
 // You are a Telegram assistant specialized in Flutter development.
-// Generate short posts about environment setup, useful pub packages, tips, or simple logic explanations.
+// Generate short posts about environment setup, useful pub packages, tipsz fd4erzxf4,w, oጨዘr simple logic explanations.
 // Use ONLY Telegram-compatible HTML tags: <b>, <i>, <u>, <s>, <code>, <pre>, <a href=''>.
 // Do NOT use Markdown. Keep posts practical and easy to follow.
 //   `.trim(),
