@@ -4,28 +4,20 @@ import { schedule } from "node-cron";
 import { retry } from "./utils/retry.util";
 import { actions } from "./handlers/actions";
 import { postTask } from "./tasks/post.task";
-import {
-  auth,
-  errorMiddleware,
-  threadPostGuard,
-} from "./middlewares";
+import { auth, errorMiddleware, threadPostGuard } from "./middlewares";
 import { BOTOKEN, logger, NODE_ENV } from "../../infrastructure/config";
 import { startCommand } from "./handlers/command";
 import { sudo, topicHearsHandler } from "./handlers/hears";
-
 
 if (!BOTOKEN) throw new Error("BOTOKEN not set in .env");
 
 export const bot = new Telegraf(BOTOKEN!);
 
-bot.use(errorMiddleware);
-bot.use(threadPostGuard);
-
+bot.use((ctx, next) => errorMiddleware(ctx, next));
+bot.use((ctx, next) => threadPostGuard(ctx, next));
 bot.start(startCommand);
 
-
 bot.use((ctx, next) => auth(ctx, next, bot.telegram));
-
 if (NODE_ENV == "production")
   schedule("*/30 */6 * * */2", async () => {
     /*

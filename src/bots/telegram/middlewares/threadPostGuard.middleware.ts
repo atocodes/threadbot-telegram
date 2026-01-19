@@ -1,7 +1,10 @@
-import { Context } from "telegraf";
+import { Context, MiddlewareFn } from "telegraf";
 import { getAdminsId } from "../utils/getAdminsId.util";
 
-export async function threadPostGuard(ctx: Context) {
+export const threadPostGuard : MiddlewareFn<Context> = async (
+  ctx: Context,
+  next: () => Promise<void>,
+) => {
   const msg = ctx.message;
   const chat = ctx.chat;
   const admins = await getAdminsId();
@@ -16,4 +19,5 @@ export async function threadPostGuard(ctx: Context) {
   ) {
     ctx.deleteMessage(msg.message_id);
   }
-}
+  await next()
+};
