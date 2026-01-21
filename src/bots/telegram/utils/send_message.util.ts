@@ -22,7 +22,7 @@ export async function SendMessage(
     topic: newPostArgs.topic,
   });
 
-  await ctx.editMessageText(res as string, {
+  await ctx.reply(res as string, {
     parse_mode: "HTML",
     ...Markup.inlineKeyboard([
       [

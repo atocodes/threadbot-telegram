@@ -36,8 +36,11 @@ promptScene.enter((ctx) => {
 });
 
 promptScene.on("text", async (ctx) => {
+  console.log(ctx.update)
+  console.log("hello")
   const topic = ctx.session.__scenes?.topic as TopicNames;
   const prompt = ctx.message.text;
+  console.log(prompt)
   pendingPrompts.set(ctx.from.id, { topic, prompt });
   
   await SendMessage(ctx, { topic, prompt });
