@@ -1,4 +1,4 @@
-import { PendingPost } from "../types/bot_types";
+import { PendingPost } from "../types/post.types";
 
 class SessionStore {
   private sessions = new Map<number, PendingPost>();

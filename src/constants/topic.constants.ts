@@ -1,1 +1,1 @@
-export const publicTopicIds = [undefined]
+export const publicTopicIds : any[] = [undefined]

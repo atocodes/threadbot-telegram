@@ -1,5 +1,5 @@
 import { TopicNames } from "../types";
-import { NewPostParams } from "../types/bot_types";
+import { NewPostParams } from "../types/post.types";
 
 export function parseTopicMessage(text: string): NewPostParams {
   const parts = Object.fromEntries(

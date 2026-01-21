@@ -1,6 +1,6 @@
 import { Message, Ollama } from "ollama";
 import { InlineQueryResultArticle } from "telegraf/types";
-import { NewPostParams } from "../../bots/telegram/types/bot_types";
+import { NewPostParams } from "../../bots/telegram/types/post.types";
 import { SystemPrompts } from "./prompts/system.prompts";
 import { logger, OLLAMA_API_KEY } from "../../infrastructure/config";
 

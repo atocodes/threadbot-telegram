@@ -1,6 +1,6 @@
 import { Context, TelegramError } from "telegraf";
 import { pendingPosts } from "../../../state/pendingPosts.store";
-import { PendingPost } from "../../../types/bot_types";
+import { PendingPost } from "../../../types/post.types";
 import { postTask } from "../../../tasks/post.task";
 import { logger } from "../../../../../infrastructure/config";
 

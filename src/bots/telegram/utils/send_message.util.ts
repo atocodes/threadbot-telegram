@@ -1,8 +1,7 @@
 import { Markup } from "telegraf";
 import { generateOllamaContent } from "../../../adapters";
-import { AssistantBotContext } from "../contexts/supergroup.context";
 import { pendingPosts } from "../state";
-import { NewPostParams } from "../types";
+import { AssistantBotContext, NewPostParams } from "../types";
 import { retry } from "./retry.util";
 
 export async function SendMessage(

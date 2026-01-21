@@ -1,5 +1,5 @@
 import { TelegramError } from "telegraf";
-import { PendingPost } from "../types/bot_types";
+import { PendingPost } from "../types/post.types";
 import {
   isPosting,
   lastPostedAt,

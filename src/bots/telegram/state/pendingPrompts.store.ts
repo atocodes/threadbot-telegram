@@ -1,4 +1,4 @@
-import { NewPostParams } from "../types/bot_types";
+import { NewPostParams } from "../types/post.types";
 
 class PromptStore {
   private prompt = new Map<number, NewPostParams>();

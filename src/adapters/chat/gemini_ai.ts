@@ -3,7 +3,7 @@ import {
   GoogleGenerativeAIFetchError,
 } from "@google/generative-ai";
 import { InlineQueryResultArticle } from "telegraf/types";
-import { NewPostParams } from "../../bots/telegram/types/bot_types";
+import { NewPostParams } from "../../bots/telegram/types/post.types";
 import { SystemPrompts } from "./prompts/system.prompts";
 import { GEMINI_TOKEN, logger } from "../../infrastructure/config";
 

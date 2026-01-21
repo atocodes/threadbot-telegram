@@ -3,7 +3,7 @@ import {
   generateOllamaContent,
 } from "../../../../../adapters/chat/ollama_ai";
 import { retry } from "../../../utils/retry.util";
-import { NewPostParams } from "../../../types/bot_types";
+import { NewPostParams } from "../../../types/post.types";
 import { pendingPosts, pendingPrompts } from "../../../state";
 import { logger } from "../../../../../infrastructure/config";
 

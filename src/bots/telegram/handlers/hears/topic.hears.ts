@@ -2,7 +2,7 @@ import { Markup } from "telegraf";
 import { generateOllamaContent } from "../../../../adapters";
 import { parseTopicMessage } from "../../parsers/topicMessage.parser";
 import { pendingPrompts } from "../../state";
-import { NewPostParams } from "../../types/bot_types";
+import { NewPostParams } from "../../types/post.types";
 import { logger } from "../../../../infrastructure/config";
 import { SendMessage } from "../../utils";
 
