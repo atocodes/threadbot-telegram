@@ -7,19 +7,22 @@ import { pendingPrompts } from "../state";
 const topicScene = new Scenes.BaseScene<AssistantBotContext>("topicScene");
 const promptScene = new Scenes.BaseScene<AssistantBotContext>("promptScene");
 // Enter handler
-topicScene.enter((ctx) =>
-  ctx.reply("Choose a topic:", {
-    ...Markup.inlineKeyboard(
-      convertTo2DArray(topicNamesList.map((topic) => `${topic}`)).map(
-        (topicRow) => {
-          return topicRow.map((topic) =>
-            Markup.button.callback(topic, `topic:${topic}`),
-          );
-        },
+topicScene.enter((ctx) => {
+  ctx.reply(
+    "Choose a topic:\nYou can type /cancel at any time to stop the conversation.",
+    {
+      ...Markup.inlineKeyboard(
+        convertTo2DArray(topicNamesList.map((topic) => `${topic}`)).map(
+          (topicRow) => {
+            return topicRow.map((topic) =>
+              Markup.button.callback(topic, `topic:${topic}`),
+            );
+          },
+        ),
       ),
-    ),
-  }),
-);
+    },
+  );
+});
 
 // Inline button handlers
 topicScene.action(/^topic:(.+)/, async (ctx) => {
@@ -43,8 +46,15 @@ promptScene.on("text", async (ctx) => {
   pendingPrompts.delete(ctx.from.id);
   ctx.scene.leave();
 });
+
+const endConversation = (ctx: AssistantBotContext) => {
+  ctx.scene.leave();
+  ctx.reply("Conversation cancelled.");
+};
+
 // Setup stage and session
 export const stage = new Scenes.Stage([topicScene, promptScene]);
+stage.command("cancel", endConversation);
 
 export async function STARTMANUALPOSTCONVERSATION(ctx: AssistantBotContext) {
   ctx.scene.enter("topicScene");

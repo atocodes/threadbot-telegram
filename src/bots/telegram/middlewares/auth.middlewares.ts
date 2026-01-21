@@ -28,7 +28,8 @@ export const auth = async (
           userName: ctx.from.username,
           userId: ctx.from.id,
           chatId: ctx.chat.id,
-          time: new Date().toLocaleTimeString()
+          time: new Date().toLocaleTimeString(),
+          message: ctx.message
         },
         `Unauthorozed user or group tried to access bot`,
       );
