@@ -40,6 +40,7 @@ bot.use((ctx, next) => errorMiddleware(ctx, next));
 bot.use((ctx, next) => threadPostGuard(ctx, next));
 bot.start(startCommand);
 
+
 bot.use((ctx, next) => auth(ctx, next, bot.telegram));
 bot.command("topics", GETOPICS);
 bot.use(session());
