@@ -49,7 +49,7 @@ bot.use(stage.middleware());
 bot.command("createcontent", STARTMANUALPOSTCONVERSATION);
 
 if (NODE_ENV == "production")
-  schedule("*/30 */6 * * */2", async () => {
+  schedule("*/30 */2 * * *", async () => {
     /*
     The task runs:
     Every 30 minutes
