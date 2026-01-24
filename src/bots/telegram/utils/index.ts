@@ -1,4 +1,5 @@
 import { isPosting, lastPostedAt, updateIsPosting } from "./anti_span_guards";
+import { getAdminsId, isUserAdmin } from "./getAdminsId.util";
 import { retry } from "./retry.util";
 import { SendMessage } from "./send_message.util";
 import { getNextTopic } from "./topic_rotation";
@@ -17,5 +18,7 @@ export {
   getNextTopic,
   escapeMarkdownV2,
   convertTo2DArray,
-  SendMessage
+  SendMessage,
+  isUserAdmin,
+  getAdminsId
 };

@@ -1,7 +1,8 @@
 import { Scenes } from "telegraf";
+import { Topic } from "../../../domain/entities";
 
 interface AssistantBotSession extends Scenes.SceneSessionData {
-  topic?: string;
+  topic?: Topic;
   question?: string;
   lastResponseMessageId?: number;
 }

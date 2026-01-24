@@ -3,7 +3,7 @@ import { contentRequestsDB, topicsDB } from "./nedb/nedb.connection";
 
 topicsDB.ensureIndex(
   {
-    fieldName: "title",
+    fieldName: ["title", "threadId"],
     unique: true,
   },
   (err) => {

@@ -1,5 +1,11 @@
 import { CreateTopicUsecase } from "./create-topic.usecases";
 import { GetTopicsUsecase } from "./get-topic.usecases";
 import { RemoveTopicUsecase } from "./remove-topic.usecases";
+import { UpdateTopicTitleUsecase } from "./update-topic.usecase";
 
-export { CreateTopicUsecase, RemoveTopicUsecase, GetTopicsUsecase };
+export {
+  CreateTopicUsecase,
+  RemoveTopicUsecase,
+  GetTopicsUsecase,
+  UpdateTopicTitleUsecase,
+};

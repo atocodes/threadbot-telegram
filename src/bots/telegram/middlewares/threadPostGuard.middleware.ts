@@ -24,8 +24,9 @@ export const threadPostGuard: MiddlewareFn<Context> = async (
       ctx.deleteMessage(msg.message_id);
       return;
     }
-    await next();
   } catch (e) {
     return;
+  } finally {
+    await next();
   }
 };

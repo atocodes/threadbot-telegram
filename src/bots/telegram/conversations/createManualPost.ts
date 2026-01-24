@@ -1,18 +1,25 @@
 import { Scenes, Markup } from "telegraf";
 import { convertTo2DArray, SendMessage } from "../utils";
-import { AssistantBotContext, TopicNames, topicNamesList } from "../types";
+import { AssistantBotContext } from "../types";
 import { pendingPrompts } from "../state";
+import {
+  findTopicUseCase,
+  getTopicsUseCase,
+} from "../../../infrastructure/container";
+import { Topic } from "../../../domain/entities";
+import { logger } from "../../../infrastructure/config";
 
 // Use generic Scenes.SceneContext for simple flows
 const topicScene = new Scenes.BaseScene<AssistantBotContext>("topicScene");
 const promptScene = new Scenes.BaseScene<AssistantBotContext>("promptScene");
 // Enter handler
-topicScene.enter((ctx) => {
+topicScene.enter(async (ctx) => {
+  const topicNamesList = (await getTopicsUseCase.execute()) ?? [];
   ctx.reply(
     "Choose a topic:\nYou can type /cancel at any time to stop the conversation.",
     {
       ...Markup.inlineKeyboard(
-        convertTo2DArray(topicNamesList.map((topic) => `${topic}`)).map(
+        convertTo2DArray(topicNamesList.map((topic) => `${topic.title}`)).map(
           (topicRow) => {
             return topicRow.map((topic) =>
               Markup.button.callback(topic, `topic:${topic}`),
@@ -26,10 +33,17 @@ topicScene.enter((ctx) => {
 
 // Inline button handlers
 topicScene.action(/^topic:(.+)/, async (ctx) => {
-  const topic = ctx.match[1];
+  const topicStr = ctx.match[1];
+  const topic = await findTopicUseCase.execute({ title: topicStr });
+  if (topic == null) {
+    logger.warn(
+      { topic: topic },
+      `Topic ${topicStr} Not found in database, this might cause unexpected errors`,
+    );
+  }
   ctx.session.__scenes = { topic };
   await ctx.answerCbQuery();
-  await ctx.editMessageText(`Great! You chose "${topic.toUpperCase()}".`);
+  await ctx.editMessageText(`Great! You chose "${topicStr.toUpperCase()}".`);
   ctx.scene.enter("promptScene");
 });
 
@@ -38,8 +52,12 @@ promptScene.enter((ctx) => {
 });
 
 promptScene.on("text", async (ctx) => {
-  const topic = ctx.session.__scenes?.topic as TopicNames;
+  const topic = ctx.session.__scenes?.topic;
   const prompt = ctx.message.text;
+  if (topic == undefined) {
+    logger.error("Topic not found from cache");
+    return;
+  }
   pendingPrompts.set(ctx.from.id, { topic, prompt });
 
   await SendMessage(ctx, { topic, prompt });

@@ -1,11 +1,11 @@
-import { TopicNames } from "./topic.types";
+import { Topic } from "../../../domain/entities/topic.model";
 
 export type PendingPost = {
-    topic?: TopicNames;
+    topic?: Topic;
     message?: string;
 };
 
 export type NewPostParams = {
-    topic: TopicNames;
+    topic: Topic;
     prompt?: string;
 };

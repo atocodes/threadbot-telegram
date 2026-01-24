@@ -12,6 +12,41 @@ export class TopicRepositoryImpl implements TopicRepository {
     }
   }
 
+  async findTopic({
+    threadId,
+    title,
+  }: {
+    threadId?: number;
+    title?: string;
+  }): Promise<Topic> {
+    try {
+      const query: Record<string, any> = {};
+      // filter the quries from the undefined values
+      Object.entries({ threadId, title }).forEach((param) => {
+        const [key, value] = param;
+        if (value == undefined) return;
+        query[key] = value;
+      });
+      const topic = await topicsDB.findOneAsync(query, { _id: 1 });
+
+      return topic;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateTopicTitle(title: string, threadId: number): Promise<void> {
+    try {
+      await topicsDB.updateAsync(
+        { threadId },
+        { $set: { title: title } },
+        { multi: false, upsert: false },
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async create(topic: Topic): Promise<void> {
     try {
       await topicsDB.insertAsync(topic);
