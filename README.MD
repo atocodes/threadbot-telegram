@@ -1,21 +1,31 @@
-# Devspace Bot
+# ThreadBot
 
-A modular Telegram bot framework built with TypeScript and Node.js, using adapter-based architecture and a lightweight **NeDB** (file-based) database.
+A modular, open‑source Telegram bot framework for managing **supergroups and topics**, built with **TypeScript** and **Node.js**, using an adapter‑based architecture and a lightweight **NeDB** (file‑based) database.
 
 ## Overview
 
-- **Platform:** Telegram
-- **Language:** TypeScript / Node.js
-- **Database:** NeDB (embedded, file-based)
-- **Goal:** Clean separation of domain logic, adapters, and bot-specific code
+**ThreadBot** is designed to manage Telegram supergroups with **multiple admins**, allowing structured topic management, automated posting, and flexible moderation workflows.
+
+The project is **ready to use and easy to modify** — simply provide the correct values in the environment variables and deploy.
+
+It is **supergroup‑agnostic**, meaning it can be used for **any type of Telegram supergroup** (communities, developer groups, learning hubs, DAO groups, etc.).
+
+> **Note:** Every topic created automatically sends a `"register"` message in the topic to ensure it is properly registered in the database.
+
+
+* **Platform:** Telegram
+* **Language:** TypeScript / Node.js
+* **Database:** NeDB (embedded, file‑based)
+* **Admins:** Supports multiple topic admins
+* **Goal:** Clean separation of domain logic, adapters, and bot‑specific code
 
 ## Project Structure (high level)
 
-- `src/bots/telegram` — Telegram bot logic (handlers, scenes, middlewares)
-- `src/adapters/chat` — Chat/LLM adapters and prompts
-- `src/domain` — Core entities and repository interfaces
-- `src/infrastructure` — DI container and configuration
-- `src/database/nedb` — NeDB datastores and repository implementations
+* `src/bots/telegram` — Telegram bot logic (handlers, scenes, middlewares)
+* `src/adapters/chat` — Chat/LLM adapters and prompts
+* `src/domain` — Core entities and repository interfaces
+* `src/infrastructure` — DI container and configuration
+* `src/database/nedb` — NeDB datastores and repository implementations
 
 ## Quick Start
 
@@ -24,13 +34,20 @@ pnpm install
 pnpm run dev
 ```
 
-Configure environment variables (bot token, paths) via `.env` or `src/infrastructure/config/env.config.ts`.
+### Environment configuration
+
+For development and production, make sure the following files exist:
+
+* `.env.development` — development environment variables
+* `.env.production` — production environment variables
+
+Provide the required bot tokens, group IDs, and service keys in these files. Once configured, ThreadBot is ready to run.
 
 ## Database
 
-- Uses [**NeDB**](https://www.npmjs.com/package/@seald-io/nedb#creatingloading-a-database) for persistence
-- No migrations required
-- Schema changes are handled in repository implementations
+* Uses **NeDB** for persistence
+* No migrations required
+* Schema changes are handled in repository implementations
 
 ## Contributing
 
@@ -38,9 +55,9 @@ Configure environment variables (bot token, paths) via `.env` or `src/infrastruc
 
 Before contributing, you must:
 
-- Make sure you get your [**Ollama**](https://docs.ollama.com/) and [**Gemini**](https://aistudio.google.com/api-keys) ai chat bot token
-- Create your **BOT** and get your **BOT TOKEN** from [**BotFather**](https://t.me/BotFather)
-- Request join to the [**Dev Space Test Group**](https://t.me/atodevspacetest) as admin for validating you bot behavior
+* Obtain your **Ollama** and **Gemini** API tokens
+* Create a Telegram bot and get a **BOT TOKEN** from **BotFather**
+* Join the test supergroup as an admin to validate bot behavior
 
 ### Development flow
 
@@ -48,13 +65,13 @@ Before contributing, you must:
 2. Add or update domain logic in `src/domain`
 3. Implement bot behavior in `src/bots/telegram`
 4. Register dependencies in `src/infrastructure/container.ts`
-5. Test using the **test bot** you created inside the [**Dev Space Test Group**](https://t.me/atodevspacetest)
+5. Test inside a supergroup
 6. Open a PR
 
 ### Guidelines
 
-- Keep TypeScript strict and readable
-- Add tests where possible
-- Use clear commit messages (`feat:`, `fix:`)
+* Keep TypeScript strict and readable
+* Add tests where possible
+* Use clear commit messages (`feat:`, `fix:`)
 
-— Keep it small, clean, and test everything in the test group.
+— ThreadBot is designed to be flexible, clean, and production‑ready.
