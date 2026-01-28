@@ -4,7 +4,7 @@ import {
 } from "@google/generative-ai";
 import { InlineQueryResultArticle } from "telegraf/types";
 import { NewPostParams } from "../../bots/telegram/types/post.types";
-import { SystemPrompts } from "./prompts/system.prompts";
+import { MegaSystemPrompt } from "./prompts/system.prompts";
 import { GEMINI_TOKEN, logger } from "../../infrastructure/config";
 
 const ai = new GoogleGenerativeAI(GEMINI_TOKEN!);
@@ -15,9 +15,11 @@ export async function generateGeminiContent({
   try {
     const model = ai.getGenerativeModel({
       model: "gemini-2.5-flash",
-      systemInstruction: SystemPrompts[topic],
+      systemInstruction: MegaSystemPrompt,
     });
-    const result = await model.generateContent(prompt ?? "");
+    const result = await model.generateContent(
+      prompt ?? `Topic: ${topic.title}\nGenerate a post.`,
+    );
     const response = await result.response;
     return response.text();
   } catch (error) {
@@ -35,7 +37,7 @@ export async function generateGeminiContent({
 }
 
 export async function generateGeminiAnswer(
-  question: string
+  question: string,
 ): Promise<InlineQueryResultArticle | undefined> {
   try {
     let responseStr = "";

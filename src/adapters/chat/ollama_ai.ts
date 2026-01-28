@@ -1,7 +1,7 @@
 import { Message, Ollama } from "ollama";
 import { InlineQueryResultArticle } from "telegraf/types";
 import { NewPostParams } from "../../bots/telegram/types/post.types";
-import { SystemPrompts } from "./prompts/system.prompts";
+import { MegaSystemPrompt } from "./prompts/system.prompts";
 import { logger, OLLAMA_API_KEY } from "../../infrastructure/config";
 
 const ollama = new Ollama({
@@ -20,8 +20,9 @@ export async function generateOllamaContent({
     const message: Message[] = [
       {
         role: "system",
-        content: SystemPrompts[topic],
+        content: MegaSystemPrompt,
       },
+      { role: "user", content: `Topic: ${topic.title}\nGenerate a post.` },
     ];
 
     if (prompt != null) {
@@ -41,14 +42,13 @@ export async function generateOllamaContent({
     }
     return responseMsg;
   } catch (error) {
-    
     logger.error(error);
     throw error;
   }
 }
 
 export async function generateOllamaAnswer(
-  question: string
+  question: string,
 ): Promise<InlineQueryResultArticle | undefined> {
   try {
     let responseMsg = "";

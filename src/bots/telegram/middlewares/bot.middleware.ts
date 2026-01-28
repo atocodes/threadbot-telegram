@@ -28,7 +28,7 @@ export const errorMiddleware: MiddlewareFn<Context> = async (ctx, next) => {
     }
 
     // IMPORTANT: rethrow so bot.catch() can handle it
-    throw err;
+    // throw err;
   }
 };
 

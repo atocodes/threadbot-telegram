@@ -8,7 +8,7 @@ export async function SendMessage(
   ctx: AssistantBotContext,
   newPostArgs: NewPostParams,
 ) {
-  ctx.reply(`🧠 Generating content for *${newPostArgs.topic}*...`, {
+  ctx.reply(`🧠 Generating content for *${newPostArgs.topic.title}*...`, {
     parse_mode: "Markdown",
   });
   const res = await retry(() => generateOllamaContent(newPostArgs), {

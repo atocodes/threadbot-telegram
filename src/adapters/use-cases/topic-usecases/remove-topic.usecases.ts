@@ -1,8 +1,9 @@
-import { TopicRepository } from "../../../domain/repositories/topic.repo";
+import { TopicRepository } from "../../../domain/repositories"
+;;
 
 export class RemoveTopicUsecase {
   constructor(private readonly topicRepo: TopicRepository) {}
-  async execute(id: number) {
-    await this.topicRepo.remove(id);
+  async execute(query: Record<string, any>) {
+    await this.topicRepo.removeTopic(query);
   }
 }

@@ -1,9 +1,10 @@
-import { TopicRepository } from "../../../domain/repositories/topic.repo";
+import { TopicRepository } from "../../../domain/repositories"
+;;
 
 export class GetTopicsUsecase {
   constructor(private readonly topicRepo: TopicRepository) {}
   async execute() {
-    const res = await this.topicRepo.getAll();
-    return res;
+    const topics = await this.topicRepo.getAll();
+    return topics;
   }
 }

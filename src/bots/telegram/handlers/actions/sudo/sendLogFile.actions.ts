@@ -1,8 +1,9 @@
 import fs from "fs";
-import { Context } from "telegraf";
+import { Context, Markup } from "telegraf";
 import { logFilePath } from "../../../../../constants";
-import { escapeMarkdownV2 } from "../../../utils";
 import { logger } from "../../../../../infrastructure/config";
+import { findManyTopicUsecase } from "../../../../../infrastructure";
+import { convertTo2DArray } from "../../../utils";
 
 export async function GET_LOG(ctx: Context) {
   try {
@@ -63,5 +64,27 @@ export async function GET_LOG(ctx: Context) {
   } catch (err) {
     logger.error({ error: err }, "Failed to send log file:");
     await ctx.reply("Failed to send logs.");
+  }
+}
+
+export async function GET_TOPICS(ctx: Context) {
+  try {
+    const topics = await findManyTopicUsecase.execute({});
+    console.log(convertTo2DArray(topics));
+    return await ctx.reply(`${topics.length} Topics`, {
+      ...Markup.inlineKeyboard(
+        convertTo2DArray(topics).map((topicRow) => {
+          return topicRow.map((topic) =>
+            Markup.button.callback(
+              topic.title,
+              `${topic.title}-${topic.threadId}`,
+            ),
+          );
+        }),
+      ),
+    });
+  } catch (error) {
+    logger.error({ error }, "Failed to fetch topics");
+    await ctx.reply("Failed to fetch Topics.");
   }
 }

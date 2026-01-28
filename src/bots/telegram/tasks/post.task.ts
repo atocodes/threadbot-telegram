@@ -11,11 +11,11 @@ import {
   generateGeminiContent,
   generateOllamaContent,
 } from "../../../adapters";
-import { TopicIds } from "../types";
 import { logger } from "../../../infrastructure/config";
 import { MIN_INTERVAL } from "../../../constants";
+import { SUPER_GROUP_ID } from "../../../infrastructure/config/env.config";
+import { updateTopicUsecase } from "../../../infrastructure";
 
-const supergroupId = -1003628334767;
 let retryCount = 0;
 
 export async function postTask({ message, topic }: PendingPost) {
@@ -25,6 +25,7 @@ export async function postTask({ message, topic }: PendingPost) {
   }
 
   const now = Date.now();
+
   if (now - lastPostedAt < MIN_INTERVAL) {
     logger.warn("Post skipped: too soon");
     return;
@@ -33,22 +34,18 @@ export async function postTask({ message, topic }: PendingPost) {
   updateIsPosting(true);
 
   try {
-    const nextTopicName = topic ?? getNextTopic();
-    logger.info("Sending message");
-    logger.info("TOPIC: " + nextTopicName);
-    logger.info("Supergroup ID: " + supergroupId);
-    logger.info("Topic ID: " + nextTopicName);
-    logger.info("Topic Link: " + TopicIds[nextTopicName]);
+    const nextTopicName = topic ?? (await getNextTopic());
+    logger.info("-----------------------");
     const msg =
       message ??
       (await generateGeminiContent({ topic: nextTopicName })) ??
       (await generateOllamaContent({ topic: nextTopicName }));
 
     if (!msg) return;
-  
-    await bot.telegram.sendMessage(supergroupId, msg, {
+
+    await bot.telegram.sendMessage(SUPER_GROUP_ID, msg, {
       parse_mode: "HTML",
-      message_thread_id: TopicIds[nextTopicName],
+      message_thread_id: topic?.threadId,
       link_preview_options: {
         show_above_text: true,
         prefer_small_media: true,
@@ -56,20 +53,21 @@ export async function postTask({ message, topic }: PendingPost) {
       },
     });
 
-    logger.info("Scheduled message sent.");
+    await updateTopicUsecase.execute({
+      threadId: topic?.threadId as number,
+      title: topic?.title as string,
+      lastPostedAt: new Date().toISOString(),
+    });
+    logger.info(
+      {
+        topic: nextTopicName,
+        SUPER_GROUP_ID,
+      },
+      "Scheduled message sent.",
+    );
+    logger.info("-----------------------");
   } catch (error) {
-    if (error instanceof TelegramError) {
-      logger.error(`Telegram Error: ${error.message}`);
-      // return;
-      retryCount += 1;
-      if (retryCount != 3) {
-        updateIsPosting(false);
-        return await postTask({ topic, message });
-      }
-      return;
-    } else {
-      logger.error("PostTask Error: " + error);
-    }
+    throw error;
   } finally {
     updateIsPosting(false);
     if (retryCount > 0) retryCount = 0;

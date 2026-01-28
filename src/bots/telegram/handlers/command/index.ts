@@ -1,4 +1,4 @@
+import { SEED_COMMAND } from "./seed.command";
 import { startCommand } from "./start.command";
-import { GETOPICS } from "./topics.command";
 
-export {startCommand,GETOPICS}
+export { startCommand, SEED_COMMAND };

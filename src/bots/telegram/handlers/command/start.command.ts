@@ -9,17 +9,19 @@ export async function startCommand(ctx: Context) {
   const userName = `${user.first_name}${user.last_name ? " " + user.last_name : ""}`;
   const atodevspaceLink = `<a href="https://t.me/atodevspace"><b>@atodevspace</b></a>`;
 
-  const adminResponse = `<b>Hello ${userName}! 😎 I’m ወይዘሮ Codes (aka Hasu Codes)</b>
-<i>Your official ${atodevspaceLink} Supergroup Content Manager 🤖✨</i>
+  const adminResponse = `<b>DevSpace Assistant — Admin Info</b>
 
-As a <b>supergroup admin</b>, you have special powers! 🛠️  
-You can create posts for specific topics using this format:
+📌 <b>Topic rules:</b>
+• Max <b>4 topics</b> per admin
+• After creating a topic, send <code>register</code> <b>inside the topic</b>
+• You can only manage <b>topics you registered</b>
+• Unregistered topics won’t work with the bot
 
-<code>topic: &lt;topic&gt; | prompt: &lt;custom prompt&gt;</code>
+🧠 <b>Content creation:</b>  
+Use /createcontent <b>on the bot</b> to generate content for your registered topics.
 
-💡 Coming soon: I’ll also take topic requests from members and turn them into content automatically.
-
-Sit back, enjoy the magic 💥, and let’s make DevSpace content shine!`;
+⚠️ No registration = no automation.
+`;
 
   const userResponse = `<b>Hello ${userName}! 😎 I’m ወይዘሮ Codes (aka Hasu Codes)</b>
 <i>Your official ${atodevspaceLink} Supergroup Content Manager 🤖✨</i>

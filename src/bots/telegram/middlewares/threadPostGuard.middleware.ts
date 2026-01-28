@@ -1,6 +1,7 @@
 import { Context, MiddlewareFn } from "telegraf";
-import { getAdminsId } from "../utils/getAdminsId.util";
 import { publicTopicIds } from "../../../constants";
+import { findTopicUseCase, getTopicsUseCase } from "../../../infrastructure";
+import { isUserAdmin } from "../utils";
 
 export const threadPostGuard: MiddlewareFn<Context> = async (
   ctx: Context,
@@ -9,23 +10,28 @@ export const threadPostGuard: MiddlewareFn<Context> = async (
   try {
     const msg = ctx.message;
     const chat = ctx.chat;
-    const admins = await getAdminsId();
-    const senderId = ctx.from?.id;
+    const sender = ctx.from;
+    const threadId = msg?.message_thread_id;
+    const isTopicGeneral = threadId == undefined;
+    if (sender?.id == undefined) return;
+    const isAdmin = await isUserAdmin(sender?.id!);
 
     if (
       ["message", "command"].includes(ctx.updateType) &&
       chat &&
       chat?.type == "supergroup" &&
-      !publicTopicIds.includes(msg?.message_thread_id) &&
+      !publicTopicIds.includes(threadId) &&
       msg?.message_thread_id != undefined &&
-      senderId &&
-      admins.includes(senderId) == false
+      sender &&
+      isTopicGeneral == false &&
+      isAdmin == false
     ) {
-      ctx.deleteMessage(msg.message_id);
-      return;
+      return ctx.deleteMessage(msg.message_id);
     }
-    await next();
   } catch (e) {
+    console.log(e, "ERRRRRRRRRR");
     return;
+  } finally {
+    await next();
   }
 };

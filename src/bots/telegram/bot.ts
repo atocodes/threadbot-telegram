@@ -1,18 +1,21 @@
-import { Telegraf, session } from "telegraf";
-import { schedule } from "node-cron";
-
-import { retry } from "./utils/retry.util";
-import { actions } from "./handlers/actions";
-import { postTask } from "./tasks/post.task";
-import { auth, errorMiddleware, threadPostGuard } from "./middlewares";
-import { BOTOKEN, logger, NODE_ENV } from "../../infrastructure/config";
-import { GETOPICS, startCommand } from "./handlers/command";
-import { sudo, topicHearsHandler } from "./handlers/hears";
+import { session, Telegraf } from "telegraf";
+import { BOTOKEN, logger, NODE_ENV } from "../../infrastructure";
+import { AssistantBotContext } from "./types";
+import {
+  auth,
+  errorMiddleware,
+  threadPostGuard,
+  updateTopic,
+} from "./middlewares";
+import { actions, registerTopic, SEED_COMMAND, startCommand, sudo } from "./handlers";
 import {
   stage,
+  STARTMANAGETOPICCONVERSATION,
   STARTMANUALPOSTCONVERSATION,
-} from "./conversations/createManualPost";
-import { AssistantBotContext } from "./types";
+} from "./conversations";
+import { retry } from "./utils";
+import { postTask } from "./tasks";
+import { schedule } from "node-cron";
 
 if (!BOTOKEN) throw new Error("BOTOKEN not set in .env");
 
@@ -35,26 +38,31 @@ bot.on("left_chat_member", (ctx) => {
     "Channel Memebr Left",
   );
 });
-
 bot.use((ctx, next) => errorMiddleware(ctx, next));
 bot.use((ctx, next) => threadPostGuard(ctx, next));
-bot.start(startCommand);
 
+bot.start(startCommand);
 bot.use((ctx, next) => auth(ctx, next, bot.telegram));
-bot.command("topics", GETOPICS);
+
+// Hears
+bot.hears(/^register$/gi, registerTopic);
+bot.hears(/^[Ss]udo$/i, sudo);
+
 bot.use(session());
 bot.use(stage.middleware());
 
 // Start conversatinal bot
 bot.command("createcontent", STARTMANUALPOSTCONVERSATION);
+bot.command("managetopics", STARTMANAGETOPICCONVERSATION);
+bot.command("seed",SEED_COMMAND)
+bot.on("message", updateTopic);
 
 if (NODE_ENV == "production")
   schedule("*/30 */2 * * *", async () => {
     /*
     The task runs:
-    Every 30 minutes
-    During 00, 06, 12, and 18 hours
-    On Sun, Tue, Thu, Sat
+    Every 30 minutes in 2 Hrs
+    Everyday
     All year round 
     */
 
@@ -72,8 +80,6 @@ else {
   logger.warn("!!Schedule post wont be running");
 }
 
-bot.hears(/^topic:/i, topicHearsHandler);
-bot.hears(/^[Ss]udo$/i, sudo);
 Object.entries(actions).forEach(([key, handler]) => {
   bot.action(key, handler);
 });
