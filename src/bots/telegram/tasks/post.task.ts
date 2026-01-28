@@ -67,7 +67,14 @@ export async function postTask({ message, topic }: PendingPost) {
     );
     logger.info("-----------------------");
   } catch (error) {
-    throw error;
+    logger.error({ error }, "Failed to send scheduled message.");
+    if (error instanceof TelegramError) {
+      await bot.telegram.sendMessage(
+        SUPER_GROUP_ID,
+        `⚠️ An error occurred while posting: ${error.description || error.message}`,
+        { parse_mode: "HTML" },
+      );
+    }
   } finally {
     updateIsPosting(false);
     if (retryCount > 0) retryCount = 0;
