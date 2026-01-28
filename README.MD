@@ -1,5 +1,13 @@
 # ThreadBot
 
+      _______
+     |__   __| |      | |             | |  
+        | |  | |__  _ __ ___  __ _  __| |
+        | |  | '_ \| '__/ _ \/ _` |/ _` |
+        | |  | | | | | |  __/ (_| | (_| |
+        |_|  |_| |_|_|  \___|\__,_|\__,_|
+              [ T H R E A D B O T ]
+
 A modular, open‑source Telegram bot framework for managing **supergroups and topics**, built with **TypeScript** and **Node.js**, using an adapter‑based architecture and a lightweight **NeDB** (file‑based) database.
 
 ## Overview
