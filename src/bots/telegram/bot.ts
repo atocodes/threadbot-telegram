@@ -7,7 +7,14 @@ import {
   threadPostGuard,
   updateTopic,
 } from "./middlewares";
-import { actions, registerTopic, SEED_COMMAND, startCommand, sudo } from "./handlers";
+import {
+  actions,
+  HELP_COMMAND,
+  registerTopic,
+  SEED_COMMAND,
+  startCommand,
+  sudo,
+} from "./handlers";
 import {
   stage,
   STARTMANAGETOPICCONVERSATION,
@@ -42,6 +49,7 @@ bot.use((ctx, next) => errorMiddleware(ctx, next));
 bot.use((ctx, next) => threadPostGuard(ctx, next));
 
 bot.start(startCommand);
+bot.command("help", HELP_COMMAND);
 bot.use((ctx, next) => auth(ctx, next, bot.telegram));
 
 // Hears
@@ -54,7 +62,7 @@ bot.use(stage.middleware());
 // Start conversatinal bot
 bot.command("createcontent", STARTMANUALPOSTCONVERSATION);
 bot.command("managetopics", STARTMANAGETOPICCONVERSATION);
-bot.command("seed",SEED_COMMAND)
+bot.command("seed", SEED_COMMAND);
 bot.on("message", updateTopic);
 
 if (NODE_ENV == "production")

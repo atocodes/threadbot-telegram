@@ -12,9 +12,13 @@ export class TopicRepositoryImpl implements TopicRepository {
     }
   }
 
-  async removeTopic(query: Record<string, any>): Promise<void> {
+  async removeTopicAdmin(query: Record<string, any>): Promise<void> {
     try {
-      await topicsDB.removeAsync({ ...query }, {});
+      const topic = await this.findTopic({ ...query });
+      await topicsDB.updateAsync(
+        { threadId: topic.threadId },
+        { creator: null },
+      );
     } catch (error) {
       throw error;
     }
