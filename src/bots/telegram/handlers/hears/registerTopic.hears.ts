@@ -1,9 +1,11 @@
 import { Context } from "telegraf";
 import { Message, Update } from "telegraf/types";
-import { createTopicUseCase, findTopicUseCase, logger } from "../../../../infrastructure";
+import {
+  logger,
+  topicRepository,
+} from "../../../../infrastructure";
 import { bot } from "../../bot";
 import { TopicLimitExceededError } from "../../../../domain";
-
 
 export async function registerTopic(
   ctx: Context<{
@@ -19,10 +21,9 @@ export async function registerTopic(
       "reply_to_message" in msg! &&
       "forum_topic_created" in msg.reply_to_message!
     ) {
-      const topicExists = await findTopicUseCase.execute({
+      const topicExists = await topicRepository.findTopic({
         threadId: msg.message_thread_id,
       });
-
       if (topicExists) {
         logger.warn(
           `Topic "${topicExists.title} Already Exists ID:${topicExists.threadId}`,
@@ -35,7 +36,7 @@ export async function registerTopic(
         return;
       }
 
-      await createTopicUseCase.execute({
+      await topicRepository.create({
         title: msg.reply_to_message.forum_topic_created.name,
         threadId: msg.message_thread_id!,
         creator: msg.from,

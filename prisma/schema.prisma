@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/infrastructure/database/prisma/generated/"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Bot {
+  id String @id @default(cuid())
+
+  name                   String @default("Dev Space")
+  max_topic_per_admin    Int    @default(4)
+  super_group_id         BigInt
+  schedule_post_interval BigInt
+}
+
+model Topic {
+  id           String    @id @default(cuid())
+  title        String
+  threadId     Int       @unique
+  lastPostedAt DateTime?
+  creatorId    String?
+  creator      Creator?  @relation(references: [id], fields: [creatorId])
+}
+
+model Creator {
+  id            String  @id @default(cuid())
+  tg_id         BigInt
+  is_bot        Boolean @default(false)
+  first_name    String
+  last_name     String
+  username      String  @unique
+  language_code String
+  topics        Topic[]
+}

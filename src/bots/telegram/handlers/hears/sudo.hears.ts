@@ -1,9 +1,9 @@
 import { Context, Markup } from "telegraf";
-import { SudoUsersId } from "../../../../infrastructure/config/sudoUsers.config";
+import { SUDOUSERID } from "../../../../infrastructure/config/env.config";
 
 export async function sudo(ctx: Context) {
   const userId = ctx.from?.id;
-  if (userId && SudoUsersId.includes(userId)) {
+  if (userId == SUDOUSERID) {
     await ctx.reply(
       "*SUDO OPTIONS*\n\nSelect an action to perform administrative tasks:",
       {
@@ -15,7 +15,7 @@ export async function sudo(ctx: Context) {
             Markup.button.callback("Get Topics", "GET_TOPICS"),
           ],
         ]),
-      }
+      },
     );
   }
 }

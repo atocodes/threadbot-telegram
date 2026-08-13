@@ -1,9 +1,9 @@
-import express, { Application } from "express";
+// import express, { Application } from "express";
 
-export const app: Application = express();
+// export const app: Application = express();
 
-app.get("/", (req, res) => {
-  res.send({
-    status: "DevSpace Live Live",
-  });
-});
+// app.get("/", (req, res) => {
+//   res.send({
+//     status: "DevSpace Live Live",
+//   });
+// });

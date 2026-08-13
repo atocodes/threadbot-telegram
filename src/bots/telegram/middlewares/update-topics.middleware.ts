@@ -1,6 +1,6 @@
 import { Context } from "telegraf";
 import { Update } from "telegraf/types";
-import { updateTopicUsecase } from "../../../infrastructure";
+import { topicRepository } from "../../../infrastructure";
 
 export const updateTopic = async (ctx: Context<Update.MessageUpdate>) => {
   const msg = ctx.message;
@@ -10,7 +10,7 @@ export const updateTopic = async (ctx: Context<Update.MessageUpdate>) => {
     const title = msg.forum_topic_edited.name;
 
     if (threadId && title)
-      await updateTopicUsecase.execute({
+      await topicRepository.updateTopic({
         threadId,
         title,
       });

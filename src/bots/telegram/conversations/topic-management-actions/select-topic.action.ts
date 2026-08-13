@@ -1,7 +1,7 @@
 import { Context } from "telegraf";
 import { CallbackQuery, Update } from "telegraf/types";
 import { AssistantBotContext } from "../../types";
-import { findTopicUseCase, logger } from "../../../../infrastructure";
+import { logger, topicRepository } from "../../../../infrastructure";
 
 export const SELECT_TOPIC_ACTION = async (
   ctx: Context<Update.CallbackQueryUpdate<CallbackQuery>> &
@@ -10,7 +10,7 @@ export const SELECT_TOPIC_ACTION = async (
     },
 ) => {
   const threadId = parseInt(ctx.match[1]);
-  const topic = await findTopicUseCase.execute({
+  const topic = await topicRepository.findTopic({
     threadId,
   });
   if (topic == null) {
@@ -22,8 +22,6 @@ export const SELECT_TOPIC_ACTION = async (
   }
   ctx.session.__scenes = { topic };
   await ctx.answerCbQuery();
-  await ctx.editMessageText(
-    `Great! You chose "${topic.title.toUpperCase()}".`,
-  );
+  await ctx.editMessageText(`Great! You chose "${topic.title.toUpperCase()}".`);
   ctx.scene.enter("promptScene");
 };

@@ -1,10 +1,9 @@
 import { Context } from "telegraf";
 import { CallbackQuery, Update } from "telegraf/types";
 import { AssistantBotContext } from "../../types";
-import { logger, removeTopicAdminUseCase } from "../../../../infrastructure";
+import { logger, topicRepository } from "../../../../infrastructure";
 import { SUPER_GROUP_ID } from "../../../../infrastructure/config/env.config";
 import { bot } from "../../bot";
-
 
 export const REMOVE_TOPIC_ACTION = async (
   ctx: Context<Update.CallbackQueryUpdate<CallbackQuery>> &
@@ -14,7 +13,7 @@ export const REMOVE_TOPIC_ACTION = async (
 ) => {
   await ctx.answerCbQuery();
   const threadId = parseInt(ctx.match[1]);
-  await removeTopicAdminUseCase.execute({ threadId });
+  await topicRepository.removeTopicAdmin({ threadId });
   // await bot.telegram.deleteForumTopic(SUPER_GROUP_ID, threadId);
   await ctx.editMessageText("Topic removed successfully.");
   await ctx.answerCbQuery();

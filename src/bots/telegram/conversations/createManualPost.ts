@@ -1,9 +1,9 @@
 import { Markup, Scenes } from "telegraf";
 import { AssistantBotContext } from "../types";
-import { findManyTopicUsecase, logger } from "../../../infrastructure";
 import { convertTo2DArray, SendMessage } from "../utils";
 import { pendingPrompts } from "../state";
 import { SELECT_TOPIC_ACTION } from "./topic-management-actions/select-topic.action";
+import { logger, topicRepository } from "../../../infrastructure";
 
 // Use generic Scenes.SceneContext for simple flows
 export const topicScene = new Scenes.BaseScene<AssistantBotContext>(
@@ -15,8 +15,8 @@ export const promptScene = new Scenes.BaseScene<AssistantBotContext>(
 // Enter handler
 topicScene.enter(async (ctx) => {
   const topics =
-    (await findManyTopicUsecase.execute({
-      "creator.id": ctx.from?.id,
+    (await topicRepository.findMany({
+      creatorId: ctx.from?.id,
     })) ?? [];
 
   if (topics.length === 0) {

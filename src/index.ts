@@ -1,4 +1,4 @@
-import { app } from "./app";
+// import { app } from "./app";
 import { bot } from "./bots";
 import { logger, PORT } from "./infrastructure/config";
 
@@ -9,4 +9,4 @@ bot
   .catch((err) => {
     logger.error(`Telegram Bot Error : ${err}`);
   });
-app.listen(port, () => logger.info(`Server started on port ${port}`));
+// app.listen(port, () => logger.info(`Server started on port ${port}`));

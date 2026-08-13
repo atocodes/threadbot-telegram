@@ -14,7 +14,7 @@ import {
 import { logger } from "../../../infrastructure/config";
 import { MIN_INTERVAL } from "../../../constants";
 import { SUPER_GROUP_ID } from "../../../infrastructure/config/env.config";
-import { updateTopicUsecase } from "../../../infrastructure";
+import { topicRepository } from "../../../infrastructure";
 
 let retryCount = 0;
 
@@ -53,7 +53,7 @@ export async function postTask({ message, topic }: PendingPost) {
       },
     });
 
-    await updateTopicUsecase.execute({
+    await topicRepository.updateTopic({
       threadId: topic?.threadId as number,
       title: topic?.title as string,
       lastPostedAt: new Date().toISOString(),

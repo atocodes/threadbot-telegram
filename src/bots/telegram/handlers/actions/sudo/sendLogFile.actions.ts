@@ -2,8 +2,8 @@ import fs from "fs";
 import { Context, Markup } from "telegraf";
 import { logFilePath } from "../../../../../constants";
 import { logger } from "../../../../../infrastructure/config";
-import { findManyTopicUsecase } from "../../../../../infrastructure";
 import { convertTo2DArray } from "../../../utils";
+import { topicRepository } from "../../../../../infrastructure";
 
 export async function GET_LOG(ctx: Context) {
   try {
@@ -69,7 +69,10 @@ export async function GET_LOG(ctx: Context) {
 
 export async function GET_TOPICS(ctx: Context) {
   try {
-    const topics = await findManyTopicUsecase.execute({});
+    const topics = await topicRepository.findMany({
+      creatorId: undefined,
+      allTopics: true,
+    });
     console.log(convertTo2DArray(topics));
     return await ctx.reply(`${topics.length} Topics`, {
       ...Markup.inlineKeyboard(

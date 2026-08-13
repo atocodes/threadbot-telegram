@@ -1,12 +1,15 @@
 import { Context } from "telegraf";
-import { findManyTopicUsecase, logger } from "../../../../infrastructure";
+import { logger, topicRepository } from "../../../../infrastructure";
 import { postTask } from "../../tasks";
 import { retry } from "../../utils";
 
 export async function SEED_COMMAND(ctx: Context) {
   try {
     const today = Date.now();
-    const topics = await findManyTopicUsecase.execute({});
+    const topics = await topicRepository.findMany({
+      creatorId: undefined,
+      allTopics: true,
+    });
 
     if (!topics.length) {
       await ctx.reply("No topics found to post content. 🧐");

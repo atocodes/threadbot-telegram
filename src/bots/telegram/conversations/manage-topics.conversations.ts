@@ -1,15 +1,15 @@
 import { Markup, Scenes } from "telegraf";
 import { AssistantBotContext } from "../types";
-import { findManyTopicUsecase } from "../../../infrastructure";
 import { REMOVE_TOPIC_ACTION } from "./topic-management-actions";
+import { topicRepository } from "../../../infrastructure";
 
 export const manageTopicsScene = new Scenes.BaseScene<AssistantBotContext>(
   "manageTopicsScene",
 );
 
 manageTopicsScene.enter(async (ctx) => {
-  const userTopics = await findManyTopicUsecase.execute({
-    "creator.id": ctx.from?.id,
+  const userTopics = await topicRepository.findMany({
+    creatorId: ctx.from?.id,
   });
 
   if (userTopics.length == 0) {

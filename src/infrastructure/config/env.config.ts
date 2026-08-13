@@ -12,5 +12,7 @@ export const PORT = Number(process.env.PORT) || 3000;
 export const OLLAMA_API_KEY = process.env.OLLAMA_TOKEN;
 export const NODE_ENV = process.env.NODE_ENV as ENVTYPE | undefined;
 export const SUPER_GROUP_ID = parseInt(process.env.SUPER_GROUP_ID as string);
-export const MAXMUM_TOPIC_PER_ADMIN=parseInt(process.env.MAXMUM_TOPIC_PER_ADMIN!) ?? -1
-
+export const MAXMUM_TOPIC_PER_ADMIN =
+  parseInt(process.env.MAXMUM_TOPIC_PER_ADMIN!) ?? -1;
+export const SUDOUSERID = parseInt(process.env.SUDO_USER_TELEGRAM_ID!) ?? -1;
+console.log(process.env.BOTOKEN);

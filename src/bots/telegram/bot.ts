@@ -65,28 +65,28 @@ bot.command("managetopics", STARTMANAGETOPICCONVERSATION);
 bot.command("seed", SEED_COMMAND);
 bot.on("message", updateTopic);
 
-if (NODE_ENV == "production")
-  schedule("*/30 */2 * * *", async () => {
-    /*
+// if (NODE_ENV == "production")
+schedule("*/30 */2 * * *", async () => {
+  /*
     The task runs:
     Every 30 minutes in 2 Hrs
     Everyday
     All year round 
     */
 
-    try {
-      retry(() => postTask({}), {
-        retries: 3,
-        delayMs: 15000,
-      });
-    } catch (error) {
-      logger.fatal("Cron crashed: " + (error as Error).message);
-    }
-  });
-else {
-  logger.warn("Running on development mode");
-  logger.warn("!!Schedule post wont be running");
-}
+  try {
+    retry(() => postTask({}), {
+      retries: 3,
+      delayMs: 15000,
+    });
+  } catch (error) {
+    logger.fatal("Cron crashed: " + (error as Error).message);
+  }
+});
+// else {
+logger.warn(`Running on > "${NODE_ENV?.toUpperCase() ?? "-"}" mode`);
+// logger.warn("!!Schedule post wont be running");
+// }
 
 Object.entries(actions).forEach(([key, handler]) => {
   bot.action(key, handler);
