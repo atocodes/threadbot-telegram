@@ -1,11 +1,10 @@
-import { Context, Markup } from "telegraf";
-import {
-  generateOllamaContent,
-} from "../../../../../adapters/chat/ollama_ai";
-import { retry } from "../../../utils/retry.util";
-import { NewPostParams } from "../../../types/post.types";
-import { pendingPosts, pendingPrompts } from "../../../state";
-import { logger } from "../../../../../infrastructure/config";
+import { Context } from "telegraf";
+import { generatePostContent } from "../../../../../adapters/index.js";
+import { retry } from "../../../utils/retry.util.js";
+import { NewPostParams } from "../../../types/post.types.js";
+import { pendingPosts, pendingPrompts } from "../../../state/index.js";
+import { logger } from "../../../../../infrastructure/config/index.js";
+import { postPreviewKeyboard } from "../../../utils/post_preview_keyboard.util.js";
 
 export async function RETRY_PROMPT(ctx: Context) {
   try {
@@ -22,7 +21,7 @@ export async function RETRY_PROMPT(ctx: Context) {
     });
 
     const res = await retry(
-      () => generateOllamaContent(data as NewPostParams),
+      () => generatePostContent(data as NewPostParams),
       {
         retries: 3,
         delayMs: 1500,
@@ -32,17 +31,12 @@ export async function RETRY_PROMPT(ctx: Context) {
     pendingPosts.set(ctx.from?.id!, {
       topic,
       message: res,
+      prompt: data.prompt,
     });
 
     await ctx.editMessageText(res as string, {
       parse_mode: "HTML",
-      ...Markup.inlineKeyboard([
-        [
-          Markup.button.callback("Post", "POST_CONTENT"),
-          Markup.button.callback("Change", "CHANGE_POST"),
-        ],
-        [Markup.button.callback("Cancel", "CANCEL_POST")],
-      ]),
+      ...postPreviewKeyboard(),
     });
   } catch (error) {
     logger.error(error);

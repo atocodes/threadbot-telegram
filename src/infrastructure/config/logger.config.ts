@@ -1,6 +1,6 @@
 import pino from "pino";
 import fs from "fs";
-import { logDir, logFilePath } from "../../constants";
+import { logDir, logFilePath } from "../../constants/index.js";
 
 
 if (!fs.existsSync(logDir)) {

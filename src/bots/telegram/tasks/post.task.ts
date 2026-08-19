@@ -1,20 +1,17 @@
 import { TelegramError } from "telegraf";
-import { PendingPost } from "../types/post.types";
+import { PendingPost } from "../types/post.types.js";
 import {
   isPosting,
   lastPostedAt,
   updateIsPosting,
-} from "../utils/anti_span_guards";
-import { getNextTopic } from "../utils/topic_rotation";
-import { bot } from "../bot";
-import {
-  generateGeminiContent,
-  generateOllamaContent,
-} from "../../../adapters";
-import { logger } from "../../../infrastructure/config";
-import { MIN_INTERVAL } from "../../../constants";
-import { SUPER_GROUP_ID } from "../../../infrastructure/config/env.config";
-import { topicRepository } from "../../../infrastructure";
+} from "../utils/anti_span_guards.js";
+import { getNextTopic } from "../utils/topic_rotation.js";
+import { bot } from "../bot.js";
+import { generatePostContent } from "../../../adapters/index.js";
+import { logger } from "../../../infrastructure/config/index.js";
+import { MIN_INTERVAL } from "../../../constants/index.js";
+import { SUPER_GROUP_ID } from "../../../infrastructure/config/env.config.js";
+import { topicRepository } from "../../../infrastructure/index.js";
 
 let retryCount = 0;
 
@@ -34,14 +31,11 @@ export async function postTask({ message, topic }: PendingPost) {
   updateIsPosting(true);
 
   try {
-    // Scheduled posts do not provide `topic`, so use the topic selected by the
-    // rotation for both content generation and the Telegram message thread.
     const targetTopic = topic ?? (await getNextTopic());
     logger.info("-----------------------");
     const msg =
       message ??
-      (await generateGeminiContent({ topic: targetTopic })) ??
-      (await generateOllamaContent({ topic: targetTopic }));
+      (await generatePostContent({ topic: targetTopic }));
 
     if (!msg) return;
 

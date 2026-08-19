@@ -1,7 +1,7 @@
 import { Context } from "telegraf";
 import { CallbackQuery, Update } from "telegraf/types";
-import { AssistantBotContext } from "../../types";
-import { logger, topicRepository } from "../../../../infrastructure";
+import { AssistantBotContext } from "../../types/index.js";
+import { logger, topicRepository } from "../../../../infrastructure/index.js";
 
 export const SELECT_TOPIC_ACTION = async (
   ctx: Context<Update.CallbackQueryUpdate<CallbackQuery>> &

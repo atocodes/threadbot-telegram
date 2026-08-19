@@ -1,8 +1,8 @@
 import { Message, Ollama } from "ollama";
 import { InlineQueryResultArticle } from "telegraf/types";
-import { NewPostParams } from "../../bots/telegram/types/post.types";
-import { MegaSystemPrompt } from "./prompts/system.prompts";
-import { logger, OLLAMA_API_KEY } from "../../infrastructure/config";
+import { NewPostParams } from "../../bots/telegram/types/post.types.js";
+import { MegaSystemPrompt } from "./prompts/system.prompts.js";
+import { logger, OLLAMA_API_KEY } from "../../infrastructure/config/index.js";
 
 const ollama = new Ollama({
   host: "https://ollama.com",

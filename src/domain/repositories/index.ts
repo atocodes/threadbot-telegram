@@ -1,4 +1,4 @@
-import { ChatRepository } from "./chat.repo";
-import { TopicRepository } from "./topic.repo";
+import { ChatRepository } from "./chat.repo.js";
+import { TopicRepository } from "./topic.repo.js";
 
 export { TopicRepository, ChatRepository };

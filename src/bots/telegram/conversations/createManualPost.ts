@@ -1,9 +1,13 @@
 import { Markup, Scenes } from "telegraf";
-import { AssistantBotContext } from "../types";
-import { convertTo2DArray, SendMessage } from "../utils";
-import { pendingPrompts } from "../state";
-import { SELECT_TOPIC_ACTION } from "./topic-management-actions/select-topic.action";
-import { logger, topicRepository } from "../../../infrastructure";
+import { AssistantBotContext } from "../types/index.js";
+import { convertTo2DArray, SendMessage } from "../utils/index.js";
+import { pendingPrompts } from "../state/index.js";
+import { SELECT_TOPIC_ACTION } from "./topic-management-actions/select-topic.action.js";
+import {
+  creatorRepository,
+  logger,
+  topicRepository,
+} from "../../../infrastructure/index.js";
 
 // Use generic Scenes.SceneContext for simple flows
 export const topicScene = new Scenes.BaseScene<AssistantBotContext>(
@@ -14,9 +18,16 @@ export const promptScene = new Scenes.BaseScene<AssistantBotContext>(
 );
 // Enter handler
 topicScene.enter(async (ctx) => {
+  const creator = await creatorRepository.find(ctx.from?.id ?? 1);
+  if (!creator) {
+    await ctx.reply(
+      'Your creator account could not be found, please send "register" message on topic you want to create',
+    );
+    return;
+  }
   const topics =
     (await topicRepository.findMany({
-      creatorId: ctx.from?.id,
+      creatorId: creator.tg_id,
     })) ?? [];
 
   if (topics.length === 0) {

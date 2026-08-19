@@ -1,4 +1,4 @@
-import { registerTopic } from "./registerTopic.hears";
-import { sudo } from "./sudo.hears";
+import { registerTopic } from "./registerTopic.hears.js";
+import { sudo } from "./sudo.hears.js";
 
 export {sudo,registerTopic}

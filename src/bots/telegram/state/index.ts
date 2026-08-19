@@ -1,4 +1,4 @@
-import { pendingPosts } from "./pendingPosts.store";
-import { pendingPrompts } from "./pendingPrompts.store";
+import { pendingPosts } from "./pendingPosts.store.js";
+import { pendingPrompts } from "./pendingPrompts.store.js";
 
 export { pendingPosts, pendingPrompts };

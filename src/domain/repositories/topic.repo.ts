@@ -1,4 +1,4 @@
-import { Topic } from "../entities";
+import { Topic } from "../entities/index.js";
 
 export interface TopicRepository {
   getAll(): Promise<Topic[] | undefined>;

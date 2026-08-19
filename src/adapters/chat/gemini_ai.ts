@@ -3,9 +3,9 @@ import {
   GoogleGenerativeAIFetchError,
 } from "@google/generative-ai";
 import { InlineQueryResultArticle } from "telegraf/types";
-import { NewPostParams } from "../../bots/telegram/types/post.types";
-import { MegaSystemPrompt } from "./prompts/system.prompts";
-import { GEMINI_TOKEN, logger } from "../../infrastructure/config";
+import { NewPostParams } from "../../bots/telegram/types/post.types.js";
+import { MegaSystemPrompt } from "./prompts/system.prompts.js";
+import { GEMINI_TOKEN, logger } from "../../infrastructure/config/index.js";
 
 const ai = new GoogleGenerativeAI(GEMINI_TOKEN!);
 export async function generateGeminiContent({

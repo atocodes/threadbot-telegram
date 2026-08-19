@@ -1,12 +1,12 @@
 import { session, Telegraf } from "telegraf";
-import { BOTOKEN, logger, NODE_ENV } from "../../infrastructure";
-import { AssistantBotContext } from "./types";
+import { BOTOKEN, logger, NODE_ENV } from "../../infrastructure/index.js";
+import { AssistantBotContext } from "./types/index.js";
 import {
   auth,
   errorMiddleware,
   threadPostGuard,
   updateTopic,
-} from "./middlewares";
+} from "./middlewares/index.js";
 import {
   actions,
   HELP_COMMAND,
@@ -14,14 +14,14 @@ import {
   SEED_COMMAND,
   startCommand,
   sudo,
-} from "./handlers";
+} from "./handlers/index.js";
 import {
   stage,
   STARTMANAGETOPICCONVERSATION,
   STARTMANUALPOSTCONVERSATION,
-} from "./conversations";
-import { retry } from "./utils";
-import { postTask } from "./tasks";
+} from "./conversations/index.js";
+import { retry } from "./utils/index.js";
+import { postTask } from "./tasks/index.js";
 import { schedule } from "node-cron";
 
 if (!BOTOKEN) throw new Error("BOTOKEN not set in .env");
@@ -66,7 +66,7 @@ bot.command("seed", SEED_COMMAND);
 bot.on("message", updateTopic);
 
 // if (NODE_ENV == "production")
-schedule("* * * * *", async () => {
+schedule("*/30 * * * *", async () => {
   /*
     The task runs:
     Every 30 minutes in 2 Hrs

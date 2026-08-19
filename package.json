@@ -1,10 +1,10 @@
 {
   "name": "my-ts-app",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon",
+    "dev": "nodemon",
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,7 +15,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "devDependencies": {
     "@prisma/adapter-pg": "^7.9.1",
     "@types/better-sqlite3": "^7.6.13",

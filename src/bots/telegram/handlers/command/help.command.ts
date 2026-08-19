@@ -1,6 +1,6 @@
 import { Context } from "telegraf";
-import { logger } from "../../../../infrastructure";
-import { isUserAdmin } from "../../utils";
+import { logger } from "../../../../infrastructure/index.js";
+import { isUserAdmin } from "../../utils/index.js";
 
 export async function HELP_COMMAND(ctx: Context) {
   const helpAdminMessage = `🤖 *Dev Space Assistant Bot — Admin Help*

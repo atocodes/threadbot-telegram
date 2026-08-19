@@ -8,6 +8,7 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Topic'
-export type * from './models/Creator'
-export type * from './commonInputTypes'
+export type * from './models/Bot.js'
+export type * from './models/Topic.js'
+export type * from './models/Creator.js'
+export type * from './commonInputTypes.js'

@@ -1,9 +1,9 @@
 import fs from "fs";
 import { Context, Markup } from "telegraf";
-import { logFilePath } from "../../../../../constants";
-import { logger } from "../../../../../infrastructure/config";
-import { convertTo2DArray } from "../../../utils";
-import { topicRepository } from "../../../../../infrastructure";
+import { logFilePath } from "../../../../../constants/index.js";
+import { logger } from "../../../../../infrastructure/config/index.js";
+import { convertTo2DArray } from "../../../utils/index.js";
+import { topicRepository } from "../../../../../infrastructure/index.js";
 
 export async function GET_LOG(ctx: Context) {
   try {

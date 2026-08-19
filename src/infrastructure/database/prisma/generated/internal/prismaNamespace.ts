@@ -16,10 +16,10 @@
  */
 
 import * as runtime from "@prisma/client/runtime/client"
-import type * as Prisma from "../models"
-import { type PrismaClient } from "./class"
+import type * as Prisma from "../models.js"
+import { type PrismaClient } from "./class.js"
 
-export type * from '../models'
+export type * from '../models.js'
 
 export type DMMF = typeof runtime.DMMF
 
@@ -397,6 +397,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  Bot: 'Bot',
   Topic: 'Topic',
   Creator: 'Creator'
 } as const
@@ -414,10 +415,84 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "topic" | "creator"
+    modelProps: "bot" | "topic" | "creator"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    Bot: {
+      payload: Prisma.$BotPayload<ExtArgs>
+      fields: Prisma.BotFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BotFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BotPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BotFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BotPayload>
+        }
+        findFirst: {
+          args: Prisma.BotFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BotPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BotFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BotPayload>
+        }
+        findMany: {
+          args: Prisma.BotFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BotPayload>[]
+        }
+        create: {
+          args: Prisma.BotCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BotPayload>
+        }
+        createMany: {
+          args: Prisma.BotCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BotCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BotPayload>[]
+        }
+        delete: {
+          args: Prisma.BotDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BotPayload>
+        }
+        update: {
+          args: Prisma.BotUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BotPayload>
+        }
+        deleteMany: {
+          args: Prisma.BotDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BotUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BotUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BotPayload>[]
+        }
+        upsert: {
+          args: Prisma.BotUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BotPayload>
+        }
+        aggregate: {
+          args: Prisma.BotAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBot>
+        }
+        groupBy: {
+          args: Prisma.BotGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BotGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BotCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BotCountAggregateOutputType> | number
+        }
+      }
+    }
     Topic: {
       payload: Prisma.$TopicPayload<ExtArgs>
       fields: Prisma.TopicFieldRefs
@@ -605,6 +680,17 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const BotScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  max_topic_per_admin: 'max_topic_per_admin',
+  super_group_id: 'super_group_id',
+  schedule_post_interval: 'schedule_post_interval'
+} as const
+
+export type BotScalarFieldEnum = (typeof BotScalarFieldEnum)[keyof typeof BotScalarFieldEnum]
+
+
 export const TopicScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -688,20 +774,6 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'DateTime'
- */
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-/**
- * Reference to a field of type 'DateTime[]'
- */
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
-
-
-/**
  * Reference to a field of type 'BigInt'
  */
 export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
@@ -712,6 +784,20 @@ export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'BigInt[]'
  */
 export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime'
+ */
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -886,6 +972,7 @@ export interface PrismaClientOptionsWithAdapter extends PrismaClientBaseOptions 
  */
 export type PrismaClientOptions = PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter
 export type GlobalOmitConfig = {
+  bot?: Prisma.BotOmit
   topic?: Prisma.TopicOmit
   creator?: Prisma.CreatorOmit
 }

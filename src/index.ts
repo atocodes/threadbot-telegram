@@ -1,6 +1,6 @@
-// import { app } from "./app";
-import { bot } from "./bots";
-import { logger, PORT } from "./infrastructure/config";
+// import { app } from "./app.js";
+import { bot } from "./bots/index.js";
+import { logger, PORT } from "./infrastructure/config/index.js";
 
 const port = PORT ?? process.env.PORT;
 bot

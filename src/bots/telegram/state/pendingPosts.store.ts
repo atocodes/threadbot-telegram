@@ -1,4 +1,4 @@
-import { PendingPost } from "../types/post.types";
+import { PendingPost } from "../types/post.types.js";
 
 class SessionStore {
   private sessions = new Map<number, PendingPost>();

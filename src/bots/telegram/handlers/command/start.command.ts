@@ -1,5 +1,5 @@
 import { Context } from "telegraf";
-import { getAdminsId } from "../../middlewares";
+import { getAdminsId } from "../../middlewares/index.js";
 
 export async function startCommand(ctx: Context) {
   const user = ctx.from!;

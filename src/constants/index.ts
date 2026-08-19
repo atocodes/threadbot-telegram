@@ -1,7 +1,7 @@
 import path from "path";
-import { MIN_INTERVAL } from "./post.constants";
+import { MIN_INTERVAL } from "./post.constants.js";
 import fs from "fs";
-import { publicTopicIds } from "./topic.constants";
+import { publicTopicIds } from "./topic.constants.js";
 const logDir = path.join(process.cwd(), "logs");
 const databaseDir = path.join(process.cwd(), "db");
 const logFilePath = path.join(logDir, "app.log");

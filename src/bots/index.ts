@@ -1,1 +1,1 @@
-export * from "./telegram"
+export * from "./telegram/index.js"

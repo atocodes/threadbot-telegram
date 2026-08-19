@@ -9,8 +9,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from "@prisma/client/runtime/client"
-import type * as $Enums from "../enums"
-import type * as Prisma from "../internal/prismaNamespace"
+import type * as $Enums from "../enums.js"
+import type * as Prisma from "../internal/prismaNamespace.js"
 
 /**
  * Model Creator
@@ -248,17 +248,17 @@ export type CreatorOrderByWithRelationInput = {
 
 export type CreatorWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  tg_id?: bigint | number
   username?: string
   AND?: Prisma.CreatorWhereInput | Prisma.CreatorWhereInput[]
   OR?: Prisma.CreatorWhereInput[]
   NOT?: Prisma.CreatorWhereInput | Prisma.CreatorWhereInput[]
-  tg_id?: Prisma.BigIntFilter<"Creator"> | bigint | number
   is_bot?: Prisma.BoolFilter<"Creator"> | boolean
   first_name?: Prisma.StringFilter<"Creator"> | string
   last_name?: Prisma.StringFilter<"Creator"> | string
   language_code?: Prisma.StringFilter<"Creator"> | string
   topics?: Prisma.TopicListRelationFilter
-}, "id" | "username">
+}, "id" | "tg_id" | "username">
 
 export type CreatorOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -419,14 +419,6 @@ export type CreatorUpdateOneWithoutTopicsNestedInput = {
   delete?: Prisma.CreatorWhereInput | boolean
   connect?: Prisma.CreatorWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.CreatorUpdateToOneWithWhereWithoutTopicsInput, Prisma.CreatorUpdateWithoutTopicsInput>, Prisma.CreatorUncheckedUpdateWithoutTopicsInput>
-}
-
-export type BigIntFieldUpdateOperationsInput = {
-  set?: bigint | number
-  increment?: bigint | number
-  decrement?: bigint | number
-  multiply?: bigint | number
-  divide?: bigint | number
 }
 
 export type BoolFieldUpdateOperationsInput = {

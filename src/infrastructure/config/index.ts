@@ -1,12 +1,12 @@
-import { ALLOWED_SUPER_GROUP_IDS } from "./allowedSuperGroupsId";
+import { ALLOWED_SUPER_GROUP_IDS } from "./allowedSuperGroupsId.js";
 import {
   BOTOKEN,
   GEMINI_TOKEN,
   NODE_ENV,
   OLLAMA_API_KEY,
   PORT,
-} from "./env.config";
-import { logger } from "./logger.config";
+} from "./env.config.js";
+import { logger } from "./logger.config.js";
 
 export {
   logger,

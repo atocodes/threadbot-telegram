@@ -17,8 +17,8 @@
 
 import * as runtime from "@prisma/client/runtime/index-browser"
 
-export type * from '../models'
-export type * from './prismaNamespace'
+export type * from '../models.js'
+export type * from './prismaNamespace.js'
 
 export const Decimal = runtime.Decimal
 
@@ -51,6 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Bot: 'Bot',
   Topic: 'Topic',
   Creator: 'Creator'
 } as const
@@ -69,6 +70,17 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const BotScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  max_topic_per_admin: 'max_topic_per_admin',
+  super_group_id: 'super_group_id',
+  schedule_post_interval: 'schedule_post_interval'
+} as const
+
+export type BotScalarFieldEnum = (typeof BotScalarFieldEnum)[keyof typeof BotScalarFieldEnum]
 
 
 export const TopicScalarFieldEnum = {

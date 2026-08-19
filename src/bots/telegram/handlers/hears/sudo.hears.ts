@@ -1,5 +1,5 @@
 import { Context, Markup } from "telegraf";
-import { SUDOUSERID } from "../../../../infrastructure/config/env.config";
+import { SUDOUSERID } from "../../../../infrastructure/config/env.config.js";
 
 export async function sudo(ctx: Context) {
   const userId = ctx.from?.id;

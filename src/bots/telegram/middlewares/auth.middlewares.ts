@@ -2,9 +2,9 @@ import { Context, Telegram } from "telegraf";
 import {
   ALLOWED_SUPER_GROUP_IDS,
   logger,
-} from "../../../infrastructure/config";
-import { SUPER_GROUP_ID } from "../../../infrastructure/config/env.config";
-import { isUserAdmin } from "../utils";
+} from "../../../infrastructure/config/index.js";
+import { SUPER_GROUP_ID } from "../../../infrastructure/config/env.config.js";
+import { isUserAdmin } from "../utils/index.js";
 
 export const auth = async (
   ctx: Context,

@@ -1,6 +1,6 @@
-import { Topic } from "../../../../domain/entities";
-import { TopicRepository } from "../../../../domain/repositories/topic.repo";
-import { prisma } from "../prisma";
+import { Topic } from "../../../../domain/entities/index.js";
+import { TopicRepository } from "../../../../domain/repositories/topic.repo.js";
+import { prisma } from "../prisma.js";
 
 export class TopicRepositoryImpl implements TopicRepository {
   async getAll(): Promise<Topic[] | undefined> {

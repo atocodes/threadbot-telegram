@@ -1,3 +1,3 @@
-export * from "./entities";
-export * from "./repositories";
-export * from "./errors";
+export * from "./entities/index.js";
+export * from "./repositories/index.js";
+export * from "./errors/index.js";

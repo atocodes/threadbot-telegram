@@ -1,8 +1,8 @@
 import { Context, TelegramError } from "telegraf";
-import { pendingPosts } from "../../../state/pendingPosts.store";
-import { PendingPost } from "../../../types/post.types";
-import { postTask } from "../../../tasks/post.task";
-import { logger } from "../../../../../infrastructure/config";
+import { pendingPosts } from "../../../state/pendingPosts.store.js";
+import { PendingPost } from "../../../types/post.types.js";
+import { postTask } from "../../../tasks/post.task.js";
+import { logger } from "../../../../../infrastructure/config/index.js";
 
 export async function POST_CONTENT(ctx: Context) {
   try {

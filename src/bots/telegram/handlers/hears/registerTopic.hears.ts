@@ -3,9 +3,9 @@ import { Message, Update } from "telegraf/types";
 import {
   logger,
   topicRepository,
-} from "../../../../infrastructure";
-import { bot } from "../../bot";
-import { TopicLimitExceededError } from "../../../../domain";
+} from "../../../../infrastructure/index.js";
+import { bot } from "../../bot.js";
+import { TopicLimitExceededError } from "../../../../domain/index.js";
 
 export async function registerTopic(
   ctx: Context<{

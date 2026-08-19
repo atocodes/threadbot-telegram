@@ -1,5 +1,5 @@
-import { SUPER_GROUP_ID } from "../../../infrastructure/config/env.config";
-import { bot } from "../bot";
+import { SUPER_GROUP_ID } from "../../../infrastructure/config/env.config.js";
+import { bot } from "../bot.js";
 
 export const getAdminsId = async () =>
   (await bot.telegram.getChatAdministrators(SUPER_GROUP_ID)).map(

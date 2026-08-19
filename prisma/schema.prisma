@@ -32,7 +32,7 @@ model Topic {
 
 model Creator {
   id            String  @id @default(cuid())
-  tg_id         BigInt
+  tg_id         BigInt  @unique
   is_bot        Boolean @default(false)
   first_name    String
   last_name     String

@@ -1,10 +1,11 @@
-import { Context, Markup } from "telegraf";
-import { generateOllamaContent } from "../../../../../adapters/chat/ollama_ai";
-import { pendingPosts } from "../../../state/pendingPosts.store";
-import { Topic } from "../../../../../domain/entities";
-// import { TopicNames } from "../../../types";
+import { Context } from "telegraf";
+import { generatePostContent } from "../../../../../adapters/index.js";
+import { pendingPosts } from "../../../state/pendingPosts.store.js";
+import { Topic } from "../../../../../domain/entities/index.js";
+import { logger } from "../../../../../infrastructure/config/index.js";
+import { postPreviewKeyboard } from "../../../utils/post_preview_keyboard.util.js";
 
-export async function CHANGE_POST(ctx: Context) {
+export async function REGENERATE_POST(ctx: Context) {
   const userId = ctx.from!.id;
   const pending = pendingPosts.get(userId);
 
@@ -13,28 +14,26 @@ export async function CHANGE_POST(ctx: Context) {
     return;
   }
 
-  await ctx.editMessageText("✏️ Updating the post...");
+  await ctx.answerCbQuery("Regenerating post...");
+  await ctx.editMessageText("🔄 Regenerating the post...");
 
-  const newMsg = await generateOllamaContent({
-    topic: pending.topic as Topic,
-  });
-  
-  pending.message = newMsg!;
-  pendingPosts.set(userId, pending);
+  try {
+    const newMsg = await generatePostContent({
+      topic: pending.topic as Topic,
+      prompt: pending.prompt,
+    });
+    if (!newMsg) throw new Error("No content was generated.");
 
-  await ctx.editMessageText(newMsg!, {
-    parse_mode: "HTML",
-    link_preview_options: {
-      show_above_text: true,
-    },
-    ...Markup.inlineKeyboard([
-      [
-        Markup.button.callback("✅ Post", "POST_CONTENT"),
-        Markup.button.callback("🔄 Change", "CHANGE_POST"),
-      ],
-      [Markup.button.callback("❌ Cancel", "CANCEL_POST")],
-    ]),
-  });
+    pending.message = newMsg;
+    pendingPosts.set(userId, pending);
 
-  await ctx.answerCbQuery("Post updated 🔄");
+    await ctx.editMessageText(newMsg, {
+      parse_mode: "HTML",
+      link_preview_options: { show_above_text: true },
+      ...postPreviewKeyboard(),
+    });
+  } catch (error) {
+    logger.error({ error }, "Failed to regenerate post content.");
+    await ctx.editMessageText("Unable to regenerate the post. Please try again.");
+  }
 }

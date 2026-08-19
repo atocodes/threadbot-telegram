@@ -1,6 +1,6 @@
 import { Context } from "telegraf";
 import { Update } from "telegraf/types";
-import { topicRepository } from "../../../infrastructure";
+import { topicRepository } from "../../../infrastructure/index.js";
 
 export const updateTopic = async (ctx: Context<Update.MessageUpdate>) => {
   const msg = ctx.message;

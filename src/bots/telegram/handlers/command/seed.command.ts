@@ -1,7 +1,7 @@
 import { Context } from "telegraf";
-import { logger, topicRepository } from "../../../../infrastructure";
-import { postTask } from "../../tasks";
-import { retry } from "../../utils";
+import { logger, topicRepository } from "../../../../infrastructure/index.js";
+import { postTask } from "../../tasks/index.js";
+import { retry } from "../../utils/index.js";
 
 export async function SEED_COMMAND(ctx: Context) {
   try {

@@ -1,9 +1,9 @@
 // Topic rotation (no repeats)
 
-import { Topic } from "../../../domain";
-import { logger, topicRepository } from "../../../infrastructure";
+import { Topic } from "../../../domain/index.js";
+import { logger, topicRepository } from "../../../infrastructure/index.js";
 
-// import { TopicNames, topicNamesList } from "../types/topic.types";
+// import { TopicNames, topicNamesList } from "../types/topic.types.js";
 
 let lastTopicIndex = -1;
 

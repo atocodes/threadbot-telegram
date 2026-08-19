@@ -1,8 +1,8 @@
 import { Context, MiddlewareFn } from "telegraf";
-import { publicTopicIds } from "../../../constants";
-import { logger } from "../../../infrastructure";
-import { isUserAdmin } from "../utils";
-import { bot } from "../bot";
+import { publicTopicIds } from "../../../constants/index.js";
+import { logger } from "../../../infrastructure/index.js";
+import { isUserAdmin } from "../utils/index.js";
+import { bot } from "../bot.js";
 
 const escapeHtml = (text = "") =>
   text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");

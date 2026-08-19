@@ -1,9 +1,9 @@
-import { getAdminsId } from "../utils/getAdminsId.util";
-import { auth } from "./auth.middlewares";
-import { errorMiddleware } from "./bot.middleware";
-import { sessionMiddleWare } from "./session";
-import { threadPostGuard } from "./threadPostGuard.middleware";
-import { updateTopic } from "./update-topics.middleware";
+import { getAdminsId } from "../utils/getAdminsId.util.js";
+import { auth } from "./auth.middlewares.js";
+import { errorMiddleware } from "./bot.middleware.js";
+import { sessionMiddleWare } from "./session.js";
+import { threadPostGuard } from "./threadPostGuard.middleware.js";
+import { updateTopic } from "./update-topics.middleware.js";
 
 export {
   auth,

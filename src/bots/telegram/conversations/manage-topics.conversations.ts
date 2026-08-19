@@ -1,7 +1,7 @@
 import { Markup, Scenes } from "telegraf";
-import { AssistantBotContext } from "../types";
-import { REMOVE_TOPIC_ACTION } from "./topic-management-actions";
-import { topicRepository } from "../../../infrastructure";
+import { AssistantBotContext } from "../types/index.js";
+import { REMOVE_TOPIC_ACTION } from "./topic-management-actions/index.js";
+import { topicRepository } from "../../../infrastructure/index.js";
 
 export const manageTopicsScene = new Scenes.BaseScene<AssistantBotContext>(
   "manageTopicsScene",

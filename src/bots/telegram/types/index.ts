@@ -1,6 +1,6 @@
-import { AssistantBotContext } from "./bot.context";
-import { NewPostParams, PendingPost } from "./post.types";
-// import { TopicIds, TopicNames, topicNamesList } from "./topic.types";
+import { AssistantBotContext } from "./bot.context.js";
+import { NewPostParams, PendingPost } from "./post.types.js";
+// import { TopicIds, TopicNames, topicNamesList } from "./topic.types.js";
 
 export {
   PendingPost,

@@ -1,16 +1,22 @@
 import { Scenes } from "telegraf";
-import { AssistantBotContext } from "../types";
+import { AssistantBotContext } from "../types/index.js";
 import {
   manageTopicsScene,
   STARTMANAGETOPICCONVERSATION,
-} from "./manage-topics.conversations";
+} from "./manage-topics.conversations.js";
 import {
   promptScene,
   STARTMANUALPOSTCONVERSATION,
   topicScene,
-} from "./createManualPost";
+} from "./createManualPost.js";
+import { editPostScene } from "./editPost.conversation.js";
 
-const stage = new Scenes.Stage([topicScene, promptScene, manageTopicsScene]);
+const stage = new Scenes.Stage([
+  topicScene,
+  promptScene,
+  editPostScene,
+  manageTopicsScene,
+]);
 
 const endConversation = (ctx: AssistantBotContext) => {
   ctx.scene.leave();
@@ -21,4 +27,4 @@ const endConversation = (ctx: AssistantBotContext) => {
 stage.command("cancel", endConversation);
 
 export { stage, STARTMANUALPOSTCONVERSATION, STARTMANAGETOPICCONVERSATION };
-export * from "./topic-management-actions";
+export * from "./topic-management-actions/index.js";

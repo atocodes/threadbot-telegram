@@ -6,7 +6,7 @@
 // Do NOT use Markdown. Keep posts concise and easy to read.
 //   `.trim(),
 
-// import { TopicNames } from "../../../bots/telegram/types";
+// import { TopicNames } from "../../../bots/telegram/types/index.js";
 
 //   resources: `
 // You are a Telegram assistant specialized in free learning resources for developers.
