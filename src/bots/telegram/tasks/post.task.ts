@@ -34,18 +34,20 @@ export async function postTask({ message, topic }: PendingPost) {
   updateIsPosting(true);
 
   try {
-    const nextTopicName = topic ?? (await getNextTopic());
+    // Scheduled posts do not provide `topic`, so use the topic selected by the
+    // rotation for both content generation and the Telegram message thread.
+    const targetTopic = topic ?? (await getNextTopic());
     logger.info("-----------------------");
     const msg =
       message ??
-      (await generateGeminiContent({ topic: nextTopicName })) ??
-      (await generateOllamaContent({ topic: nextTopicName }));
+      (await generateGeminiContent({ topic: targetTopic })) ??
+      (await generateOllamaContent({ topic: targetTopic }));
 
     if (!msg) return;
 
     await bot.telegram.sendMessage(SUPER_GROUP_ID, msg, {
       parse_mode: "HTML",
-      message_thread_id: topic?.threadId,
+      message_thread_id: targetTopic.threadId,
       link_preview_options: {
         show_above_text: true,
         prefer_small_media: true,
@@ -54,13 +56,13 @@ export async function postTask({ message, topic }: PendingPost) {
     });
 
     await topicRepository.updateTopic({
-      threadId: topic?.threadId as number,
-      title: topic?.title as string,
+      threadId: targetTopic.threadId,
+      title: targetTopic.title,
       lastPostedAt: new Date().toISOString(),
     });
     logger.info(
       {
-        topic: nextTopicName,
+        topic: targetTopic,
         SUPER_GROUP_ID,
       },
       "Scheduled message sent.",

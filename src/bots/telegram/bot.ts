@@ -66,7 +66,7 @@ bot.command("seed", SEED_COMMAND);
 bot.on("message", updateTopic);
 
 // if (NODE_ENV == "production")
-schedule("*/30 */2 * * *", async () => {
+schedule("* * * * *", async () => {
   /*
     The task runs:
     Every 30 minutes in 2 Hrs
